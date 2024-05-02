@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import {
+  Container,
   FormControl,
   TextField,
   Button,
   Box,
   Snackbar,
-  Alert
+  Alert,
+  Toolbar
 } from '@mui/material';
 
 function DetailForm({ newProduct }) {
@@ -17,19 +19,9 @@ function DetailForm({ newProduct }) {
   const { productId } = useParams();
 
   useEffect(() => {
-    if (newProduct) {
-      setProductData({
-        name: '',
-        brand: '',
-        features: [],
-        types: ['activewear', 'dress', 'footwear', 'outerwear', 'dress'],
-        sizes: []
-      });
-    } else {
-      axios.get(`http://localhost:8080/api/products/${productId}`)
-        .then(res => setProductData(res.data))
-        .catch(error => console.error('Error:', error));
-    }
+    axios.get(`http://localhost:8080/api/products/${productId}`)
+      .then(res => setProductData(res.data))
+      .catch(error => console.error('Error:', error));
   }, []);
 
   const handleChange = (field, value) => {
@@ -77,9 +69,11 @@ function DetailForm({ newProduct }) {
   }
 
   return (
-    <div className="DetailForm" style={{ maxWidth: '1200px', margin: 'auto' }}>
-      <Link to={"/"}>Back To Product List</Link>
-      <Box sx={{ minWidth: 600 }}>
+    <Container maxWidth="md" className="DetailForm">
+        <Toolbar>
+          <Link to={"/"}>Back To Product List</Link>
+        </Toolbar>
+      <Box sx={{ margin: '20px 0' }}>
         <form onSubmit={handleSubmit}>
           <FormControl fullWidth sx={{ margin: '10px' }}>
             <TextField
@@ -96,9 +90,8 @@ function DetailForm({ newProduct }) {
           <FormControl fullWidth sx={{ margin: '10px' }}>
             <TextField
               readOnly
-              labelId="product-type"
+              label="product-type"
               id="product-type"
-              label="Type"
               value={productData.type}
             />
           </FormControl>
@@ -140,7 +133,7 @@ function DetailForm({ newProduct }) {
           Product saved successfully!
         </Alert>
       </Snackbar>
-    </div>
+    </Container>
   );
 }
 

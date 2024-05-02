@@ -1,0 +1,60 @@
+
+const options = {
+  sizes: {
+    footwear: ['US 7', 'US 8', 'US 9', 'US 10'],
+    clothing: ['M', 'L', 'XL'],
+  },
+  types: [
+    "activewear",
+    "dress",
+    "footwear",
+    "outerwear",
+    "top"
+  ],
+  brands: [
+    "Aerowear",
+    "ChicStyles",
+    "Eleganza",
+    "ExtremeGear",
+    "FitFlex",
+    "OutfitMakers",
+    "RunXpert",
+    "UrbanSteps",
+    "WeatherProtectors",
+    "YogaEssentials",
+  ],
+  features: [
+    "Adjustable cuffs",
+    "Breathable fabric",
+    "Breathable mesh upper",
+    "Breathable",
+    "Canvas material",
+    "Cushioned insole",
+    "Floor-length",
+    "Floral pattern",
+    "Flowing fabric",
+    "High-waisted",
+    "Hood with drawstrings",
+    "Inner pocket",
+    "Insulated for warmth",
+    "Kangaroo pocket",
+    "Lightweight and airy",
+    "Medium support",
+    "Moisture-wicking fabric",
+    "Multiple pockets",
+    "Racerback design",
+    "Removable hood",
+    "Round neck",
+    "Rubber sole",
+    "Shock-absorbing sole",
+    "Short sleeves",
+    "Spaghetti straps",
+    "Stretchy and comfortable",
+    "V-neckline",
+    "Versatile design",
+    "Warm and cozy",
+    "Waterproof",
+  ]
+}
+
+export default options;

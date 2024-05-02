@@ -1,77 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import options from '../../constants/options';
 import axios from 'axios';
 import {
+  Container,
   FormControl,
-  InputLabel,
   Select,
   Autocomplete,
   TextField,
   Button,
   MenuItem,
   Box,
-  Chip,
   Snackbar,
-  Alert
+  Alert,
+  Toolbar
 } from '@mui/material';
 
-const options = {
-  sizes: {
-    footwear: ['US 7', 'US 8', 'US 9', 'US 10'],
-    clothing: ['M', 'L', 'XL'],
-  },
-  types: [
-    "activewear",
-    "dress",
-    "footwear",
-    "outerwear",
-    "top"
-  ],
-  brands: [
-    "Aerowear",
-    "ChicStyles",
-    "Eleganza",
-    "ExtremeGear",
-    "FitFlex",
-    "OutfitMakers",
-    "RunXpert",
-    "UrbanSteps",
-    "WeatherProtectors",
-    "YogaEssentials",
-  ],
-  features: [
-    "Adjustable cuffs",
-    "Breathable fabric",
-    "Breathable mesh upper",
-    "Breathable",
-    "Canvas material",
-    "Cushioned insole",
-    "Floor-length",
-    "Floral pattern",
-    "Flowing fabric",
-    "High-waisted",
-    "Hood with drawstrings",
-    "Inner pocket",
-    "Insulated for warmth",
-    "Kangaroo pocket",
-    "Lightweight and airy",
-    "Medium support",
-    "Moisture-wicking fabric",
-    "Multiple pockets",
-    "Racerback design",
-    "Removable hood",
-    "Round neck",
-    "Rubber sole",
-    "Shock-absorbing sole",
-    "Short sleeves",
-    "Spaghetti straps",
-    "Stretchy and comfortable",
-    "V-neckline",
-    "Versatile design",
-    "Warm and cozy",
-    "Waterproof",
-  ]
-}
 
 function NewForm({ newProduct }) {
   const { productId } = useParams();
@@ -89,17 +33,34 @@ function NewForm({ newProduct }) {
   const [isSuccess, setIsSuccess] = useState(false);
   const [sizeType, setSizeType] = useState('clothing');
 
+  useEffect(() => {
+    if (newProduct) {
+      setProductData({
+        name: '',
+        brand: '',
+        features: options.features,
+        sizes: [],
+        type: '',
+        style: '',
+        colour: '',
+        neckline: ''
+      });
+    } else {
+      axios.get(`http://localhost:8080/api/products/${productId}`)
+        .then(res => setProductData(res.data))
+        .catch(error => console.error('Error:', error));
+    }
+  }, []);
+
   const handleChange = (field, value) => {
     setProductData(prevState => ({
       ...prevState,
       [field]: value
     }));
-  }
+  };
 
   const handleTypeChange = (field, value) => {
-
     value === 'footwear' ? setSizeType('footwear') : setSizeType('clothing');
-
     setProductData(prevState => ({
       ...prevState,
       type: value
@@ -107,9 +68,7 @@ function NewForm({ newProduct }) {
   }
 
   const handleNameChange = async (field, value) => {
-
     handleChange(field, value);
-
     try {
       const response = await axios.post(`http://localhost:8080/api/validate`, {
         id: productData.id,
@@ -147,9 +106,11 @@ function NewForm({ newProduct }) {
   }
 
   return (
-    <div className="DetailForm" style={{ maxWidth: '1200px', margin: 'auto' }}>
-      <Link to={"/"}>Back To Product List</Link>
-      <Box sx={{ minWidth: 600 }}>
+    <Container maxWidth="md" className="DetailForm">
+      <Toolbar>
+        <Link to={"/"}>Back To Product List</Link>
+      </Toolbar>
+      <Box sx={{ margin: '20px 0' }}>
         <form onSubmit={handleSubmit}>
           <FormControl fullWidth sx={{ margin: '10px' }}>
             <TextField
@@ -263,7 +224,7 @@ function NewForm({ newProduct }) {
           Form submitted successfully!
         </Alert>
       </Snackbar>
-    </div>
+    </Container>
   );
 }
 

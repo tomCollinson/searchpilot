@@ -1,11 +1,18 @@
+import { Container, AppBar, Toolbar, Typography } from '@mui/material';
 import { Outlet } from "react-router-dom";
 
 function Layout() {
   return (
-    <div className="Layout">
-      <header><h1>Search Pilot</h1></header>
+    <Container maxWidth="lg" className="Layout">
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div">
+            Search Pilot
+          </Typography>
+        </Toolbar>
+      </AppBar>
       <Outlet/>
-    </div>
+    </Container>
   );
 }
 
