@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import {
   FormControl,
@@ -87,11 +87,9 @@ function NewForm({ newProduct }) {
   });
   const [isUniqueName, setIsUniqueName] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [sizeType, setSizeType] = useState('clothing');
 
   const handleChange = (field, value) => {
-
-    console.log(field,value);
-    
     setProductData(prevState => ({
       ...prevState,
       [field]: value
@@ -99,15 +97,19 @@ function NewForm({ newProduct }) {
   }
 
   const handleTypeChange = (field, value) => {
+
+    value === 'footwear' ? setSizeType('footwear') : setSizeType('clothing');
+
     setProductData(prevState => ({
       ...prevState,
-      type: value,
-      sizes: options.sizes[value === 'footwear' ? 'footwear' : 'clothing']
+      type: value
     }));
   }
 
   const handleNameChange = async (field, value) => {
+
     handleChange(field, value);
+
     try {
       const response = await axios.post(`http://localhost:8080/api/validate`, {
         id: productData.id,
@@ -146,6 +148,7 @@ function NewForm({ newProduct }) {
 
   return (
     <div className="DetailForm" style={{ maxWidth: '1200px', margin: 'auto' }}>
+      <Link to={"/"}>Back To Product List</Link>
       <Box sx={{ minWidth: 600 }}>
         <form onSubmit={handleSubmit}>
           <FormControl fullWidth sx={{ margin: '10px' }}>
@@ -162,8 +165,8 @@ function NewForm({ newProduct }) {
 
           <FormControl fullWidth sx={{ margin: '10px' }}>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              labelId="product-type"
+              id="product-type"
               value={productData.type}
               label="Type"
               onChange={(event) => handleTypeChange('type', event.target.value)}
@@ -180,9 +183,9 @@ function NewForm({ newProduct }) {
                 <Autocomplete
                   multiple
                   id="product-size"
-                  options={productData.sizes}
+                  options={options.sizes[sizeType]}
                   getOptionLabel={(option) => option}
-                  onChange={(value) => handleChange('sizes', value)}
+                  onChange={(event, selectedValues) => handleChange('sizes', selectedValues)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -199,7 +202,7 @@ function NewForm({ newProduct }) {
                   id="product-features"
                   options={options.features}
                   getOptionLabel={(option) => option}
-                  onChange={(value) => handleChange('features', value)}
+                  onChange={(event, selectedValues) => handleChange('features', selectedValues)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -213,11 +216,11 @@ function NewForm({ newProduct }) {
               {productData.type === 'top' && 
                 <FormControl fullWidth sx={{ margin: '10px' }}>
                 <TextField
-                  id="product-colour"
-                  label="Colour"
+                  id="product-neckline"
+                  label="Neckline"
                   variant="standard"
-                  value={productData.colour}
-                  onChange={(event) => handleChange('colour', event.target.value)}
+                  value={productData.neckline}
+                  onChange={(event) => handleChange('neckline', event.target.value)}
                 />
               </FormControl>
               }
@@ -228,16 +231,16 @@ function NewForm({ newProduct }) {
                   id="product-colour"
                   label="Colour"
                   variant="standard"
-                  value={productData.neckline}
-                  onChange={(event) => handleChange('neckline', event.target.value)}
+                  value={productData.colour}
+                  onChange={(event) => handleChange('colour', event.target.value)}
                 />
               </FormControl>
               }
 
               <FormControl fullWidth sx={{ margin: '10px' }}>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
+                  labelId="product-brand"
+                  id="product-brand"
                   value={productData.brand}
                   label="Brand"
                   onChange={(event) => handleChange('brand', event.target.value)}
