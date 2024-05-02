@@ -50,7 +50,6 @@ function DetailForm({ newProduct }) {
     event.preventDefault();
     try {
       const response = await axios.put(`http://localhost:8080/api/products/${productData.id}`, productData);
-      setProductData(response.data);
       setIsSuccess(true);
     } catch (error) {
       console.error('Error:', error);
